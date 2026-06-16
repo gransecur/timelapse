@@ -1,0 +1,1197 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TimeLapse Builder — Obras</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@500;700&display=swap');
+
+  :root {
+    --bg: #0f1117;
+    --surface: #181c24;
+    --surface2: #1e2330;
+    --border: #2a3040;
+    --accent: #f5a623;
+    --accent2: #e8821a;
+    --text: #e8eaf0;
+    --muted: #6b7590;
+    --success: #3ecf8e;
+    --danger: #f05252;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    min-height: 100vh;
+  }
+
+  header {
+    border-bottom: 1px solid var(--border);
+    padding: 20px 32px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: var(--surface);
+  }
+
+  .logo-icon {
+    width: 36px; height: 36px;
+    background: var(--accent);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+  }
+
+  header h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+  }
+
+  header span {
+    color: var(--muted);
+    font-size: 13px;
+    margin-left: auto;
+  }
+
+  .container {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 32px 24px;
+  }
+
+  /* STEPS */
+  .steps {
+    display: flex;
+    gap: 0;
+    margin-bottom: 36px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .step {
+    flex: 1;
+    padding: 14px 16px;
+    background: var(--surface);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-right: 1px solid var(--border);
+    transition: background 0.2s;
+  }
+
+  .step:last-child { border-right: none; }
+
+  .step.active { background: var(--surface2); }
+  .step.done { background: var(--surface); }
+
+  .step-num {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    border: 1.5px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--muted);
+    flex-shrink: 0;
+  }
+
+  .step.active .step-num {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #000;
+  }
+
+  .step.done .step-num {
+    background: var(--success);
+    border-color: var(--success);
+    color: #000;
+  }
+
+  .step-label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--muted);
+  }
+
+  .step.active .step-label { color: var(--text); }
+
+  /* CARDS */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px;
+    margin-bottom: 20px;
+  }
+
+  .card-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .card-desc {
+    color: var(--muted);
+    font-size: 13px;
+    margin-bottom: 22px;
+    line-height: 1.6;
+  }
+
+  /* FORM ELEMENTS */
+  label {
+    display: block;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
+
+  input[type=text], input[type=date], input[type=number], select {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  input:focus, select:focus {
+    border-color: var(--accent);
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  .form-group {
+    margin-bottom: 16px;
+  }
+
+  /* BUTTONS */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 11px 22px;
+    border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    transition: all 0.15s;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #000;
+  }
+
+  .btn-primary:hover { background: var(--accent2); }
+  .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .btn-outline {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text);
+  }
+
+  .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+  .btn-success {
+    background: var(--success);
+    color: #000;
+  }
+
+  .btn-danger {
+    background: transparent;
+    border: 1px solid var(--danger);
+    color: var(--danger);
+    font-size: 12px;
+    padding: 6px 12px;
+  }
+
+  /* GOOGLE AUTH */
+  .auth-section {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 20px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 20px;
+  }
+
+  .auth-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--muted);
+    flex-shrink: 0;
+  }
+
+  .auth-dot.connected { background: var(--success); }
+
+  .btn-google {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 18px;
+    background: #fff;
+    color: #333;
+    border: none;
+    border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: opacity 0.15s;
+  }
+
+  .btn-google:hover { opacity: 0.9; }
+
+  /* FILE LIST */
+  .file-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .stat-box {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px;
+    text-align: center;
+  }
+
+  .stat-num {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .stat-label {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  /* PREVIEW GRID */
+  .preview-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 6px;
+    max-height: 220px;
+    overflow-y: auto;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px;
+    background: var(--bg);
+    margin-top: 12px;
+  }
+
+  .preview-thumb {
+    aspect-ratio: 16/9;
+    background: var(--surface2);
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+    border: 1px solid var(--border);
+  }
+
+  .preview-thumb img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+  }
+
+  .preview-thumb .thumb-label {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    background: rgba(0,0,0,0.7);
+    font-size: 9px;
+    padding: 2px 4px;
+    color: #ccc;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* PROGRESS */
+  .progress-wrap {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 16px;
+  }
+
+  .progress-bar-bg {
+    height: 6px;
+    background: var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+    margin: 10px 0;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 3px;
+    transition: width 0.3s;
+  }
+
+  .progress-log {
+    font-size: 12px;
+    color: var(--muted);
+    max-height: 100px;
+    overflow-y: auto;
+    font-family: monospace;
+    margin-top: 8px;
+  }
+
+  .progress-log div { margin-bottom: 3px; }
+  .progress-log .log-ok { color: var(--success); }
+  .progress-log .log-warn { color: var(--accent); }
+
+  /* SLIDER */
+  input[type=range] {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    outline: none;
+    margin: 10px 0;
+  }
+
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px; height: 18px;
+    background: var(--accent);
+    border-radius: 50%;
+    cursor: pointer;
+  }
+
+  .range-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  .range-value {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--accent);
+    text-align: center;
+    margin: 6px 0;
+  }
+
+  /* ALERT */
+  .alert {
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    margin-bottom: 16px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    line-height: 1.5;
+  }
+
+  .alert-info {
+    background: rgba(245, 166, 35, 0.08);
+    border: 1px solid rgba(245, 166, 35, 0.25);
+    color: #f5c06a;
+  }
+
+  .alert-warn {
+    background: rgba(240, 82, 82, 0.08);
+    border: 1px solid rgba(240, 82, 82, 0.25);
+    color: #f08080;
+  }
+
+  .hidden { display: none !important; }
+
+  /* SETUP MODAL */
+  #setup-modal {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.8);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 100;
+    padding: 20px;
+  }
+
+  .modal-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 36px;
+    max-width: 540px;
+    width: 100%;
+  }
+
+  .modal-box h2 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+
+  .modal-box p {
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.7;
+    margin-bottom: 20px;
+  }
+
+  .setup-steps {
+    counter-reset: step;
+    margin-bottom: 24px;
+  }
+
+  .setup-step {
+    counter-increment: step;
+    display: flex;
+    gap: 12px;
+    margin-bottom: 14px;
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.5;
+  }
+
+  .setup-step::before {
+    content: counter(step);
+    background: var(--accent);
+    color: #000;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700;
+    font-size: 11px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .code-inline {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1px 7px;
+    font-family: monospace;
+    font-size: 12px;
+    color: var(--accent);
+  }
+
+  a { color: var(--accent); }
+
+  .input-row {
+    display: flex; gap: 10px;
+  }
+
+  .input-row input {
+    flex: 1;
+  }
+
+  /* VIDEO RESULT */
+  #video-result video {
+    width: 100%;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+  }
+
+  .download-row {
+    display: flex;
+    gap: 12px;
+    margin-top: 14px;
+    flex-wrap: wrap;
+  }
+</style>
+</head>
+<body>
+
+<!-- SETUP MODAL -->
+<div id="setup-modal">
+  <div class="modal-box">
+    <h2>🎬 Configuração inicial</h2>
+    <p>Para conectar ao Google Drive, você precisa de uma <strong>Client ID</strong> da API do Google. É gratuito e leva cerca de 5 minutos. Faça isso uma única vez.</p>
+
+    <div class="setup-steps">
+      <div class="setup-step">Acesse <a href="https://console.cloud.google.com" target="_blank">console.cloud.google.com</a> e crie um projeto (pode chamar de "TimeLapse").</div>
+      <div class="setup-step">No menu lateral, vá em <strong>APIs e Serviços → Biblioteca</strong> e ative a <strong>Google Drive API</strong> e a <strong>Google Picker API</strong>.</div>
+      <div class="setup-step">Vá em <strong>APIs e Serviços → Credenciais → Criar Credenciais → ID do cliente OAuth</strong>. Tipo: <strong>Aplicativo da Web</strong>. Em "origens JS autorizadas" adicione a URL desta página.</div>
+      <div class="setup-step">Copie o <strong>ID do cliente</strong> (termina em <code class="code-inline">.apps.googleusercontent.com</code>) e cole abaixo.</div>
+    </div>
+
+    <div class="form-group">
+      <label>Client ID do Google OAuth</label>
+      <div class="input-row">
+        <input type="text" id="client-id-input" placeholder="XXXXX.apps.googleusercontent.com">
+        <button class="btn btn-primary" onclick="saveClientId()">Salvar</button>
+      </div>
+    </div>
+
+    <div id="modal-error" class="alert alert-warn hidden"></div>
+
+    <p style="margin-top:16px; font-size:12px;">Também precisará da <a href="https://console.cloud.google.com/apis/credentials" target="_blank">API Key</a> do Google para o Picker.</p>
+    <div class="form-group">
+      <label>API Key do Google</label>
+      <input type="text" id="api-key-input" placeholder="AIzaSy...">
+    </div>
+    <button class="btn btn-outline" onclick="skipSetup()" style="margin-top:8px; font-size:12px;">Pular por agora (modo demo)</button>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="logo-icon">🏗️</div>
+  <h1>TimeLapse Builder</h1>
+  <span id="header-status">Não conectado ao Drive</span>
+</header>
+
+<div class="container">
+
+  <!-- STEPS NAV -->
+  <div class="steps">
+    <div class="step active" id="step-1">
+      <div class="step-num">1</div>
+      <div class="step-label">Conectar Drive</div>
+    </div>
+    <div class="step" id="step-2">
+      <div class="step-num">2</div>
+      <div class="step-label">Selecionar Pasta</div>
+    </div>
+    <div class="step" id="step-3">
+      <div class="step-num">3</div>
+      <div class="step-label">Período & Filtros</div>
+    </div>
+    <div class="step" id="step-4">
+      <div class="step-num">4</div>
+      <div class="step-label">Gerar Vídeo</div>
+    </div>
+  </div>
+
+  <!-- CARD 1: CONECTAR -->
+  <div class="card" id="card-connect">
+    <div class="card-title">📁 Conectar ao Google Drive</div>
+    <div class="card-desc">Faça login com a conta Google que possui a pasta com as fotos da obra.</div>
+
+    <div class="auth-section">
+      <div class="auth-dot" id="auth-dot"></div>
+      <div id="auth-text" style="flex:1; font-size:13px; color: var(--muted);">Não conectado</div>
+      <button class="btn-google" onclick="handleAuthClick()" id="auth-btn">
+        <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.35-8.16 2.35-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+        Entrar com Google
+      </button>
+    </div>
+
+    <div class="alert alert-info">
+      ℹ️ Seus arquivos não são enviados a nenhum servidor. Todo o processamento ocorre no seu navegador.
+    </div>
+  </div>
+
+  <!-- CARD 2: PASTA -->
+  <div class="card" id="card-folder">
+    <div class="card-title">📂 Selecionar Pasta de Fotos</div>
+    <div class="card-desc">Escolha a pasta no Google Drive onde a câmera salva as fotos da obra.</div>
+
+    <div id="folder-picker-area">
+      <button class="btn btn-outline" onclick="openFolderPicker()" id="btn-pick-folder" disabled>
+        📂 Escolher pasta no Drive
+      </button>
+    </div>
+
+    <div id="folder-selected" class="hidden" style="margin-top:16px;">
+      <div style="display:flex; align-items:center; gap:12px; padding:12px 16px; background:var(--bg); border:1px solid var(--border); border-radius:8px;">
+        <span style="font-size:20px;">📁</span>
+        <div>
+          <div id="folder-name" style="font-weight:500; font-size:14px;"></div>
+          <div id="folder-count" style="font-size:12px; color:var(--muted); margin-top:2px;"></div>
+        </div>
+        <button class="btn-danger btn" onclick="changeFolder()" style="margin-left:auto;">Trocar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CARD 3: FILTROS -->
+  <div class="card" id="card-filters">
+    <div class="card-title">⚙️ Período & Configurações</div>
+    <div class="card-desc">Defina o intervalo de datas e quantas fotos por dia serão usadas no vídeo.</div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>Data de início</label>
+        <input type="date" id="date-start">
+      </div>
+      <div class="form-group">
+        <label>Data de fim</label>
+        <input type="date" id="date-end">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Fotos por dia no vídeo</label>
+      <div class="range-value" id="fps-display">4 fotos</div>
+      <input type="range" id="photos-per-day" min="1" max="24" value="4" oninput="updateRange()">
+      <div class="range-labels"><span>1 (1 foto)</span><span>24 (1/hora)</span></div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>Velocidade do vídeo (FPS)</label>
+        <select id="video-fps">
+          <option value="15">15 FPS — suave</option>
+          <option value="24" selected>24 FPS — cinematográfico</option>
+          <option value="30">30 FPS — fluido</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Resolução de saída</label>
+        <select id="video-res">
+          <option value="1920x1080" selected>1080p Full HD</option>
+          <option value="1280x720">720p HD</option>
+          <option value="3840x2160">4K (lento)</option>
+        </select>
+      </div>
+    </div>
+
+    <div id="filter-preview" class="hidden">
+      <div class="file-stats" id="stats-grid"></div>
+      <div id="preview-thumbs"></div>
+    </div>
+
+    <button class="btn btn-outline" onclick="applyFilters()" id="btn-apply" style="margin-top:8px;">
+      🔍 Calcular fotos selecionadas
+    </button>
+  </div>
+
+  <!-- CARD 4: GERAR -->
+  <div class="card" id="card-generate">
+    <div class="card-title">🎬 Gerar Vídeo Time-Lapse</div>
+    <div class="card-desc">O vídeo será processado no seu navegador e salvo em formato <strong>.mp4</strong>.</div>
+
+    <div id="generate-summary" class="hidden">
+      <div class="file-stats" id="gen-stats"></div>
+    </div>
+
+    <div id="progress-section" class="hidden">
+      <div class="progress-wrap">
+        <div style="display:flex; justify-content:space-between; font-size:13px;">
+          <span id="progress-label">Baixando fotos…</span>
+          <span id="progress-pct">0%</span>
+        </div>
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill" id="progress-fill" style="width:0%"></div>
+        </div>
+        <div class="progress-log" id="progress-log"></div>
+      </div>
+    </div>
+
+    <div id="video-result" class="hidden">
+      <video controls id="video-player"></video>
+      <div class="download-row">
+        <button class="btn btn-success" onclick="downloadVideo()">⬇️ Baixar .mp4</button>
+        <button class="btn btn-outline" onclick="resetAll()">🔄 Novo vídeo</button>
+      </div>
+    </div>
+
+    <div id="generate-actions">
+      <button class="btn btn-primary" onclick="startGenerate()" id="btn-generate" disabled>
+        ▶️ Gerar Time-Lapse
+      </button>
+    </div>
+
+    <div class="alert alert-info" style="margin-top:16px;" id="generate-note">
+      ℹ️ O processamento pode demorar alguns minutos dependendo da quantidade de fotos. Mantenha esta aba aberta.
+    </div>
+  </div>
+
+</div>
+
+<!-- Google APIs -->
+<script src="https://apis.google.com/js/api.js"></script>
+<script src="https://accounts.google.com/gsi/client"></script>
+
+<script>
+// =====================
+// CONFIG & STATE
+// =====================
+let CLIENT_ID = '';
+let API_KEY = '';
+let accessToken = null;
+let selectedFolderId = null;
+let allFiles = [];
+let selectedFiles = [];
+let videoBlob = null;
+let tokenClient = null;
+
+const SCOPES = 'https://www.googleapis.com/auth/drive.readonly';
+
+// =====================
+// SETUP MODAL
+// =====================
+function saveClientId() {
+  CLIENT_ID = document.getElementById('client-id-input').value.trim();
+  API_KEY = document.getElementById('api-key-input').value.trim();
+  if (!CLIENT_ID) {
+    showModalError('Por favor, insira o Client ID.');
+    return;
+  }
+  document.getElementById('setup-modal').classList.add('hidden');
+  initGoogleAuth();
+}
+
+function skipSetup() {
+  document.getElementById('setup-modal').classList.add('hidden');
+  showDemoMode();
+}
+
+function showModalError(msg) {
+  const el = document.getElementById('modal-error');
+  el.textContent = msg;
+  el.classList.remove('hidden');
+}
+
+// =====================
+// GOOGLE AUTH
+// =====================
+function initGoogleAuth() {
+  gapi.load('client:picker', async () => {
+    await gapi.client.init({ apiKey: API_KEY, discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'] });
+
+    tokenClient = google.accounts.oauth2.initTokenClient({
+      client_id: CLIENT_ID,
+      scope: SCOPES,
+      callback: (tokenResponse) => {
+        if (tokenResponse.error) { console.error(tokenResponse); return; }
+        accessToken = tokenResponse.access_token;
+        onAuthSuccess();
+      }
+    });
+
+    document.getElementById('auth-btn').disabled = false;
+  });
+}
+
+function handleAuthClick() {
+  if (!CLIENT_ID) {
+    document.getElementById('setup-modal').classList.remove('hidden');
+    return;
+  }
+  if (accessToken) {
+    onAuthSuccess();
+  } else {
+    tokenClient.requestAccessToken({ prompt: 'consent' });
+  }
+}
+
+function onAuthSuccess() {
+  const dot = document.getElementById('auth-dot');
+  dot.classList.add('connected');
+  document.getElementById('auth-text').innerHTML = '<span style="color:var(--success); font-weight:500;">✓ Conectado ao Google Drive</span>';
+  document.getElementById('auth-btn').textContent = '✓ Conectado';
+  document.getElementById('auth-btn').disabled = true;
+  document.getElementById('header-status').textContent = 'Drive conectado';
+  document.getElementById('btn-pick-folder').disabled = false;
+  setStep(2);
+}
+
+// =====================
+// FOLDER PICKER
+// =====================
+function openFolderPicker() {
+  const picker = new google.picker.PickerBuilder()
+    .setAppId(CLIENT_ID.split('-')[0])
+    .setOAuthToken(accessToken)
+    .setDeveloperKey(API_KEY)
+    .addView(new google.picker.DocsView(google.picker.ViewId.FOLDERS)
+      .setSelectFolderEnabled(true)
+      .setMimeTypes('application/vnd.google-apps.folder'))
+    .setCallback(pickerCallback)
+    .build();
+  picker.setVisible(true);
+}
+
+function pickerCallback(data) {
+  if (data.action === google.picker.Action.PICKED) {
+    const folder = data.docs[0];
+    selectedFolderId = folder.id;
+    document.getElementById('folder-name').textContent = folder.name;
+    document.getElementById('folder-count').textContent = 'Carregando fotos…';
+    document.getElementById('folder-selected').classList.remove('hidden');
+    document.getElementById('folder-picker-area').classList.add('hidden');
+    setStep(3);
+    loadFolderFiles();
+  }
+}
+
+function changeFolder() {
+  selectedFolderId = null;
+  allFiles = [];
+  document.getElementById('folder-selected').classList.add('hidden');
+  document.getElementById('folder-picker-area').classList.remove('hidden');
+  document.getElementById('filter-preview').classList.add('hidden');
+  document.getElementById('btn-generate').disabled = true;
+}
+
+// =====================
+// LOAD FILES FROM DRIVE
+// =====================
+async function loadFolderFiles() {
+  allFiles = [];
+  let pageToken = null;
+  let total = 0;
+
+  do {
+    const query = `'${selectedFolderId}' in parents and mimeType contains 'image/' and trashed = false`;
+    const params = new URLSearchParams({
+      q: query,
+      fields: 'nextPageToken,files(id,name,createdTime,size)',
+      pageSize: 1000,
+      orderBy: 'name'
+    });
+    if (pageToken) params.set('pageToken', pageToken);
+
+    const res = await gapi.client.drive.files.list({ q: query, fields: 'nextPageToken,files(id,name,createdTime,size)', pageSize: 1000, orderBy: 'name', pageToken });
+    const data = res.result;
+    allFiles = allFiles.concat(data.files || []);
+    pageToken = data.nextPageToken;
+    total = allFiles.length;
+    document.getElementById('folder-count').textContent = `${total} fotos carregadas…`;
+  } while (pageToken);
+
+  // Parse dates from filenames like: Obra HE_00_20250303024931.jpg
+  allFiles = allFiles.map(f => {
+    const match = f.name.match(/(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/);
+    if (match) {
+      const [, y, mo, d, h, mi, s] = match;
+      f.parsedDate = new Date(`${y}-${mo}-${d}T${h}:${mi}:${s}`);
+      f.dateStr = `${y}-${mo}-${d}`;
+    }
+    return f;
+  }).filter(f => f.parsedDate);
+
+  allFiles.sort((a, b) => a.parsedDate - b.parsedDate);
+
+  const dates = [...new Set(allFiles.map(f => f.dateStr))].sort();
+  document.getElementById('folder-count').textContent = `${allFiles.length} fotos • ${dates.length} dias`;
+
+  if (dates.length > 0) {
+    document.getElementById('date-start').value = dates[0];
+    document.getElementById('date-end').value = dates[dates.length - 1];
+  }
+}
+
+// =====================
+// FILTERS
+// =====================
+function updateRange() {
+  const v = document.getElementById('photos-per-day').value;
+  document.getElementById('fps-display').textContent = `${v} foto${v > 1 ? 's' : ''} por dia`;
+}
+
+function applyFilters() {
+  const start = document.getElementById('date-start').value;
+  const end = document.getElementById('date-end').value;
+  const ppd = parseInt(document.getElementById('photos-per-day').value);
+
+  if (!start || !end) { alert('Selecione o período.'); return; }
+  if (!allFiles.length && !demoMode) { alert('Carregue uma pasta primeiro.'); return; }
+
+  const filtered = (demoMode ? getDemoFiles() : allFiles).filter(f => f.dateStr >= start && f.dateStr <= end);
+
+  // Group by date
+  const byDate = {};
+  filtered.forEach(f => {
+    if (!byDate[f.dateStr]) byDate[f.dateStr] = [];
+    byDate[f.dateStr].push(f);
+  });
+
+  // Sample N evenly per day
+  selectedFiles = [];
+  Object.values(byDate).forEach(dayFiles => {
+    dayFiles.sort((a, b) => a.parsedDate - b.parsedDate);
+    if (dayFiles.length <= ppd) {
+      selectedFiles.push(...dayFiles);
+    } else {
+      const step = (dayFiles.length - 1) / (ppd - 1);
+      for (let i = 0; i < ppd; i++) {
+        selectedFiles.push(dayFiles[Math.round(i * step)]);
+      }
+    }
+  });
+
+  const days = Object.keys(byDate).length;
+  const totalDuration = Math.round(selectedFiles.length / parseInt(document.getElementById('video-fps').value));
+
+  // Stats
+  document.getElementById('stats-grid').innerHTML = `
+    <div class="stat-box"><div class="stat-num">${selectedFiles.length}</div><div class="stat-label">Fotos selecionadas</div></div>
+    <div class="stat-box"><div class="stat-num">${days}</div><div class="stat-label">Dias cobertos</div></div>
+    <div class="stat-box"><div class="stat-num">${totalDuration}s</div><div class="stat-label">Duração estimada</div></div>
+  `;
+
+  document.getElementById('filter-preview').classList.remove('hidden');
+
+  // Thumb previews (show first 20 as placeholders)
+  const grid = document.getElementById('preview-thumbs');
+  grid.innerHTML = '<div class="preview-grid">' + selectedFiles.slice(0, 20).map(f =>
+    `<div class="preview-thumb">
+      <div style="width:100%;height:100%;background:linear-gradient(135deg,#1e2330,#2a3040);display:flex;align-items:center;justify-content:center;font-size:18px;">📷</div>
+      <div class="thumb-label">${f.dateStr}</div>
+    </div>`
+  ).join('') + (selectedFiles.length > 20 ? `<div class="preview-thumb" style="display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--muted);">+${selectedFiles.length - 20}</div>` : '') + '</div>';
+
+  // Update generate section
+  document.getElementById('gen-stats').innerHTML = document.getElementById('stats-grid').innerHTML;
+  document.getElementById('generate-summary').classList.remove('hidden');
+  document.getElementById('btn-generate').disabled = false;
+  setStep(4);
+}
+
+// =====================
+// GENERATE VIDEO
+// =====================
+let demoMode = false;
+
+function showDemoMode() {
+  demoMode = true;
+  document.getElementById('auth-dot').classList.add('connected');
+  document.getElementById('auth-text').innerHTML = '<span style="color:var(--accent);">⚠ Modo demo — sem conexão real ao Drive</span>';
+  document.getElementById('auth-btn').disabled = true;
+  document.getElementById('btn-pick-folder').disabled = false;
+  document.getElementById('folder-name').textContent = 'Pasta Demo (sem Drive real)';
+  document.getElementById('folder-count').textContent = '120 fotos simuladas';
+  document.getElementById('folder-selected').classList.remove('hidden');
+  document.getElementById('folder-picker-area').classList.add('hidden');
+  allFiles = getDemoFiles();
+  const dates = [...new Set(allFiles.map(f => f.dateStr))];
+  document.getElementById('date-start').value = dates[0];
+  document.getElementById('date-end').value = dates[dates.length - 1];
+  setStep(3);
+}
+
+function getDemoFiles() {
+  const files = [];
+  const start = new Date('2025-01-01');
+  for (let d = 0; d < 30; d++) {
+    const day = new Date(start);
+    day.setDate(start.getDate() + d);
+    const ds = day.toISOString().slice(0, 10).replace(/-/g, '');
+    for (let h = 6; h < 18; h += 2) {
+      const name = `Obra HE_00_${ds}${String(h).padStart(2,'0')}0000.jpg`;
+      files.push({
+        id: `demo_${d}_${h}`,
+        name,
+        parsedDate: new Date(`${ds.slice(0,4)}-${ds.slice(4,6)}-${ds.slice(6,8)}T${String(h).padStart(2,'0')}:00:00`),
+        dateStr: `${ds.slice(0,4)}-${ds.slice(4,6)}-${ds.slice(6,8)}`,
+        demo: true
+      });
+    }
+  }
+  return files;
+}
+
+async function startGenerate() {
+  document.getElementById('generate-actions').classList.add('hidden');
+  document.getElementById('progress-section').classList.remove('hidden');
+  document.getElementById('generate-note').classList.add('hidden');
+
+  const [w, h] = document.getElementById('video-res').value.split('x').map(Number);
+  const fps = parseInt(document.getElementById('video-fps').value);
+
+  log('Iniciando processamento de ' + selectedFiles.length + ' fotos…', 'log-ok');
+
+  // Canvas setup
+  const canvas = document.createElement('canvas');
+  canvas.width = w; canvas.height = h;
+  const ctx = canvas.getContext('2d');
+
+  // Video encoder via MediaRecorder
+  const stream = canvas.captureStream(fps);
+  const chunks = [];
+  const recorder = new MediaRecorder(stream, { mimeType: 'video/webm;codecs=vp9', videoBitsPerSecond: 8_000_000 });
+  recorder.ondataavailable = e => { if (e.data.size > 0) chunks.push(e.data); };
+
+  recorder.onstop = async () => {
+    log('Finalizando vídeo…', 'log-ok');
+    const webmBlob = new Blob(chunks, { type: 'video/webm' });
+    videoBlob = webmBlob;
+    const url = URL.createObjectURL(webmBlob);
+    document.getElementById('video-player').src = url;
+    document.getElementById('progress-section').classList.add('hidden');
+    document.getElementById('video-result').classList.remove('hidden');
+    setStepDone(4);
+    log('✓ Vídeo pronto!', 'log-ok');
+  };
+
+  recorder.start();
+
+  const frameDuration = 1000 / fps;
+  const total = selectedFiles.length;
+
+  for (let i = 0; i < total; i++) {
+    const f = selectedFiles[i];
+    const pct = Math.round((i / total) * 100);
+    setProgress(pct, `Processando ${i + 1}/${total} — ${f.dateStr}`);
+
+    await drawFrame(ctx, f, w, h, i, total);
+    await new Promise(r => setTimeout(r, frameDuration));
+  }
+
+  // Draw last frame held
+  await new Promise(r => setTimeout(r, 500));
+  recorder.stop();
+}
+
+async function drawFrame(ctx, file, w, h, index, total) {
+  if (!file.demo && accessToken) {
+    // Real image from Drive
+    try {
+      const url = `https://www.googleapis.com/drive/v3/files/${file.id}?alt=media`;
+      const resp = await fetch(url, { headers: { Authorization: 'Bearer ' + accessToken } });
+      const blob = await resp.blob();
+      const img = await createImageBitmap(blob);
+      ctx.drawImage(img, 0, 0, w, h);
+    } catch {
+      drawPlaceholderFrame(ctx, file, w, h, index);
+    }
+  } else {
+    drawPlaceholderFrame(ctx, file, w, h, index);
+  }
+
+  // Overlay: date + progress bar
+  ctx.fillStyle = 'rgba(0,0,0,0.45)';
+  ctx.fillRect(0, h - 56, w, 56);
+  ctx.fillStyle = '#f5a623';
+  ctx.font = `bold ${Math.round(w * 0.018)}px Arial`;
+  ctx.fillText(file.parsedDate.toLocaleString('pt-BR'), 20, h - 28);
+
+  // Progress bar
+  const barW = (index / total) * w;
+  ctx.fillStyle = '#f5a623';
+  ctx.fillRect(0, h - 5, barW, 5);
+}
+
+function drawPlaceholderFrame(ctx, file, w, h, index) {
+  // Gradient sky simulation for demo
+  const progress = index / selectedFiles.length;
+  const r = Math.round(20 + progress * 30);
+  const g = Math.round(30 + progress * 40);
+  const b = Math.round(60 + progress * 80);
+  const grad = ctx.createLinearGradient(0, 0, 0, h);
+  grad.addColorStop(0, `rgb(${r + 10},${g + 20},${b + 40})`);
+  grad.addColorStop(1, `rgb(${r + 40},${g + 50},${b + 20})`);
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, w, h);
+
+  // Simulated building silhouette
+  ctx.fillStyle = 'rgba(0,0,0,0.5)';
+  const buildProgress = 0.3 + progress * 0.5;
+  const bh = h * buildProgress;
+  ctx.fillRect(w * 0.3, h - bh, w * 0.4, bh);
+
+  // DEMO watermark
+  ctx.fillStyle = 'rgba(255,255,255,0.15)';
+  ctx.font = `bold ${Math.round(w * 0.05)}px Arial`;
+  ctx.textAlign = 'center';
+  ctx.fillText('MODO DEMO', w / 2, h / 2);
+  ctx.textAlign = 'left';
+}
+
+function downloadVideo() {
+  if (!videoBlob) return;
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(videoBlob);
+  const start = document.getElementById('date-start').value;
+  const end = document.getElementById('date-end').value;
+  a.download = `timelapse_obra_${start}_${end}.mp4`;
+  a.click();
+}
+
+function resetAll() {
+  selectedFiles = [];
+  videoBlob = null;
+  document.getElementById('video-result').classList.add('hidden');
+  document.getElementById('progress-section').classList.add('hidden');
+  document.getElementById('generate-actions').classList.remove('hidden');
+  document.getElementById('generate-note').classList.remove('hidden');
+  document.getElementById('generate-summary').classList.add('hidden');
+  document.getElementById('btn-generate').disabled = true;
+  document.getElementById('filter-preview').classList.add('hidden');
+  document.getElementById('progress-log').innerHTML = '';
+  setProgress(0, 'Aguardando…');
+}
+
+// =====================
+// UTILS
+// =====================
+function setProgress(pct, label) {
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-pct').textContent = pct + '%';
+  document.getElementById('progress-label').textContent = label;
+}
+
+function log(msg, cls = '') {
+  const el = document.getElementById('progress-log');
+  const div = document.createElement('div');
+  div.textContent = msg;
+  if (cls) div.classList.add(cls);
+  el.appendChild(div);
+  el.scrollTop = el.scrollHeight;
+}
+
+function setStep(n) {
+  for (let i = 1; i <= 4; i++) {
+    const el = document.getElementById(`step-${i}`);
+    el.classList.remove('active', 'done');
+    if (i < n) el.classList.add('done');
+    if (i === n) el.classList.add('active');
+    // Update done step nums to checkmarks
+    if (i < n) el.querySelector('.step-num').textContent = '✓';
+    else el.querySelector('.step-num').textContent = i;
+  }
+}
+
+function setStepDone(n) {
+  const el = document.getElementById(`step-${n}`);
+  el.classList.remove('active');
+  el.classList.add('done');
+  el.querySelector('.step-num').textContent = '✓';
+}
+
+// Init
+window.onload = () => {
+  // If saved credentials exist
+  const saved = localStorage.getItem('timelapse_client_id');
+  if (saved) {
+    document.getElementById('client-id-input').value = saved;
+  }
+};
+</script>
+</body>
+</html>
