@@ -1,0 +1,1971 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TimeLapse Builder — Obras</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@500;700&display=swap');
+
+  :root {
+    --bg: #0f1117;
+    --surface: #181c24;
+    --surface2: #1e2330;
+    --border: #2a3040;
+    --accent: #f5a623;
+    --accent2: #e8821a;
+    --text: #e8eaf0;
+    --muted: #6b7590;
+    --success: #3ecf8e;
+    --danger: #f05252;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    min-height: 100vh;
+  }
+
+  header {
+    border-bottom: 1px solid var(--border);
+    padding: 20px 32px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: var(--surface);
+  }
+
+  .logo-icon {
+    width: 36px; height: 36px;
+    background: var(--accent);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+  }
+
+  header h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+  }
+
+  header span {
+    color: var(--muted);
+    font-size: 13px;
+    margin-left: auto;
+  }
+
+  .container {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 32px 24px;
+  }
+
+  /* STEPS */
+  .steps {
+    display: flex;
+    gap: 0;
+    margin-bottom: 36px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .step {
+    flex: 1;
+    padding: 14px 16px;
+    background: var(--surface);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-right: 1px solid var(--border);
+    transition: background 0.2s;
+  }
+
+  .step:last-child { border-right: none; }
+
+  .step.active { background: var(--surface2); }
+  .step.done { background: var(--surface); }
+
+  .step-num {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    border: 1.5px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--muted);
+    flex-shrink: 0;
+  }
+
+  .step.active .step-num {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #000;
+  }
+
+  .step.done .step-num {
+    background: var(--success);
+    border-color: var(--success);
+    color: #000;
+  }
+
+  .step-label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--muted);
+  }
+
+  .step.active .step-label { color: var(--text); }
+
+  /* CARDS */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px;
+    margin-bottom: 20px;
+  }
+
+  .card-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .card-desc {
+    color: var(--muted);
+    font-size: 13px;
+    margin-bottom: 22px;
+    line-height: 1.6;
+  }
+
+  /* FORM ELEMENTS */
+  label {
+    display: block;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
+
+  input[type=text], input[type=date], input[type=number], select {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  input:focus, select:focus {
+    border-color: var(--accent);
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  .form-group {
+    margin-bottom: 16px;
+  }
+
+  /* BUTTONS */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 11px 22px;
+    border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    transition: all 0.15s;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #000;
+  }
+
+  .btn-primary:hover { background: var(--accent2); }
+  .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .btn-outline {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text);
+  }
+
+  .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+  .btn-success {
+    background: var(--success);
+    color: #000;
+  }
+
+  .btn-danger {
+    background: transparent;
+    border: 1px solid var(--danger);
+    color: var(--danger);
+    font-size: 12px;
+    padding: 6px 12px;
+  }
+
+  /* GOOGLE AUTH */
+  .auth-section {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 20px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 20px;
+  }
+
+  .auth-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--muted);
+    flex-shrink: 0;
+  }
+
+  .auth-dot.connected { background: var(--success); }
+
+  .btn-google {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 18px;
+    background: #fff;
+    color: #333;
+    border: none;
+    border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: opacity 0.15s;
+  }
+
+  .btn-google:hover { opacity: 0.9; }
+
+  /* FILE LIST */
+  .file-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .stat-box {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px;
+    text-align: center;
+  }
+
+  .stat-num {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .stat-label {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  /* PREVIEW GRID */
+  .preview-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 6px;
+    max-height: 220px;
+    overflow-y: auto;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px;
+    background: var(--bg);
+    margin-top: 12px;
+  }
+
+  .preview-thumb {
+    aspect-ratio: 16/9;
+    background: var(--surface2);
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+    border: 1px solid var(--border);
+  }
+
+  .preview-thumb img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+  }
+
+  .preview-thumb .thumb-label {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    background: rgba(0,0,0,0.7);
+    font-size: 9px;
+    padding: 2px 4px;
+    color: #ccc;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* PROGRESS */
+  .progress-wrap {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 16px;
+  }
+
+  .progress-bar-bg {
+    height: 6px;
+    background: var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+    margin: 10px 0;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 3px;
+    transition: width 0.3s;
+  }
+
+  .progress-log {
+    font-size: 12px;
+    color: var(--muted);
+    max-height: 100px;
+    overflow-y: auto;
+    font-family: monospace;
+    margin-top: 8px;
+  }
+
+  .progress-log div { margin-bottom: 3px; }
+  .progress-log .log-ok { color: var(--success); }
+  .progress-log .log-warn { color: var(--accent); }
+
+  /* SLIDER */
+  input[type=range] {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    outline: none;
+    margin: 10px 0;
+  }
+
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px; height: 18px;
+    background: var(--accent);
+    border-radius: 50%;
+    cursor: pointer;
+  }
+
+  .range-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  .range-value {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--accent);
+    text-align: center;
+    margin: 6px 0;
+  }
+
+  /* ALERT */
+  .alert {
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    margin-bottom: 16px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    line-height: 1.5;
+  }
+
+  .alert-info {
+    background: rgba(245, 166, 35, 0.08);
+    border: 1px solid rgba(245, 166, 35, 0.25);
+    color: #f5c06a;
+  }
+
+  .alert-warn {
+    background: rgba(240, 82, 82, 0.08);
+    border: 1px solid rgba(240, 82, 82, 0.25);
+    color: #f08080;
+  }
+
+  .hidden { display: none !important; }
+
+  /* SETUP MODAL */
+  #setup-modal {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.8);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 100;
+    padding: 20px;
+  }
+
+  .modal-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 36px;
+    max-width: 540px;
+    width: 100%;
+  }
+
+  .modal-box h2 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+
+  .modal-box p {
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.7;
+    margin-bottom: 20px;
+  }
+
+  .setup-steps {
+    counter-reset: step;
+    margin-bottom: 24px;
+  }
+
+  .setup-step {
+    counter-increment: step;
+    display: flex;
+    gap: 12px;
+    margin-bottom: 14px;
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.5;
+  }
+
+  .setup-step::before {
+    content: counter(step);
+    background: var(--accent);
+    color: #000;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700;
+    font-size: 11px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .code-inline {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1px 7px;
+    font-family: monospace;
+    font-size: 12px;
+    color: var(--accent);
+  }
+
+  a { color: var(--accent); }
+
+  .input-row {
+    display: flex; gap: 10px;
+  }
+
+  .input-row input {
+    flex: 1;
+  }
+
+  /* VIDEO RESULT */
+  #video-result video {
+    width: 100%;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+  }
+
+  .download-row {
+    display: flex;
+    gap: 12px;
+    margin-top: 14px;
+    flex-wrap: wrap;
+  }
+
+  /* FOLDER BROWSER MODAL */
+  #folder-browser-modal {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.75);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 200;
+    padding: 20px;
+  }
+
+  .fb-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    width: 100%; max-width: 580px;
+    max-height: 80vh;
+    display: flex; flex-direction: column;
+    overflow: hidden;
+  }
+
+  .fb-header {
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 10px;
+  }
+
+  .fb-header h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 15px; font-weight: 700; flex: 1;
+  }
+
+  .fb-breadcrumb {
+    padding: 10px 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 6px;
+    flex-wrap: wrap;
+    background: var(--bg);
+    font-size: 12px;
+  }
+
+  .fb-crumb {
+    color: var(--accent);
+    cursor: pointer;
+    font-weight: 500;
+  }
+
+  .fb-crumb:hover { text-decoration: underline; }
+
+  .fb-crumb-sep { color: var(--muted); }
+
+  .fb-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 8px;
+  }
+
+  .fb-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.12s;
+    border: 1px solid transparent;
+  }
+
+  .fb-item:hover { background: var(--surface2); border-color: var(--border); }
+
+  .fb-item.selected { background: rgba(245,166,35,0.1); border-color: var(--accent); }
+
+  .fb-item-icon { font-size: 20px; flex-shrink: 0; }
+
+  .fb-item-name { font-size: 13px; font-weight: 500; flex: 1; }
+
+  .fb-item-arrow { color: var(--muted); font-size: 12px; }
+
+  .fb-loading {
+    text-align: center; padding: 40px;
+    color: var(--muted); font-size: 13px;
+  }
+
+  .fb-footer {
+    padding: 14px 20px;
+    border-top: 1px solid var(--border);
+    display: flex; align-items: center; gap: 12px;
+  }
+
+  .fb-selected-label {
+    flex: 1; font-size: 12px; color: var(--muted);
+  }
+
+  .fb-selected-label span { color: var(--text); font-weight: 500; }
+
+
+  /* ERROR PANEL */
+  #error-panel {
+    position: fixed;
+    bottom: 16px; right: 16px;
+    width: 380px;
+    background: #1a0f0f;
+    border: 1px solid var(--danger);
+    border-radius: 10px;
+    font-family: monospace;
+    font-size: 12px;
+    z-index: 9999;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.5);
+    overflow: hidden;
+  }
+
+  #error-panel-header {
+    background: var(--danger);
+    color: #fff;
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+  }
+
+  #error-panel-body {
+    max-height: 200px;
+    overflow-y: auto;
+    padding: 10px 12px;
+  }
+
+  .err-line {
+    color: #ff8080;
+    margin-bottom: 6px;
+    line-height: 1.5;
+    border-bottom: 1px solid rgba(255,80,80,0.15);
+    padding-bottom: 6px;
+  }
+
+  .err-line .err-time {
+    color: #ff5050;
+    margin-right: 6px;
+  }
+
+  .err-line .err-loc {
+    color: #888;
+    font-size: 10px;
+    display: block;
+    margin-top: 2px;
+  }
+
+  #error-panel-footer {
+    padding: 8px 12px;
+    border-top: 1px solid rgba(255,80,80,0.2);
+    display: flex;
+    gap: 8px;
+  }
+
+</style>
+</head>
+<body>
+
+<!-- SETUP MODAL -->
+<div id="setup-modal">
+  <div class="modal-box">
+    <h2>🎬 Configuração inicial</h2>
+    <p>Para conectar ao Google Drive, você precisa de uma <strong>Client ID</strong> da API do Google. É gratuito e leva cerca de 5 minutos. Faça isso uma única vez.</p>
+
+    <div class="setup-steps">
+      <div class="setup-step">Acesse <a href="https://console.cloud.google.com" target="_blank">console.cloud.google.com</a> e crie um projeto (pode chamar de "TimeLapse").</div>
+      <div class="setup-step">No menu lateral, vá em <strong>APIs e Serviços → Biblioteca</strong> e ative a <strong>Google Drive API</strong> e a <strong>Google Picker API</strong>.</div>
+      <div class="setup-step">Vá em <strong>APIs e Serviços → Credenciais → Criar Credenciais → ID do cliente OAuth</strong>. Tipo: <strong>Aplicativo da Web</strong>. Em "origens JS autorizadas" adicione a URL desta página.</div>
+      <div class="setup-step">Copie o <strong>ID do cliente</strong> (termina em <code class="code-inline">.apps.googleusercontent.com</code>) e cole abaixo.</div>
+    </div>
+
+    <div class="form-group">
+      <label>Client ID do Google OAuth</label>
+      <div class="input-row">
+        <input type="text" id="client-id-input" placeholder="XXXXX.apps.googleusercontent.com">
+        <button class="btn btn-primary" onclick="saveClientId()">Salvar</button>
+      </div>
+    </div>
+
+    <div id="modal-error" class="alert alert-warn hidden"></div>
+
+    <p style="margin-top:16px; font-size:12px;">Também precisará da <a href="https://console.cloud.google.com/apis/credentials" target="_blank">API Key</a> do Google para o Picker.</p>
+    <div class="form-group">
+      <label>API Key do Google</label>
+      <input type="text" id="api-key-input" placeholder="AIzaSy...">
+    </div>
+    <button class="btn btn-outline" onclick="skipSetup()" style="margin-top:8px; font-size:12px;">Pular por agora (modo demo)</button>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="logo-icon">🏗️</div>
+  <h1>TimeLapse Builder</h1>
+  <span id="header-status">Não conectado ao Drive</span>
+</header>
+
+<div class="container">
+
+  <!-- STEPS NAV -->
+  <div class="steps">
+    <div class="step active" id="step-1">
+      <div class="step-num">1</div>
+      <div class="step-label">Conectar Drive</div>
+    </div>
+    <div class="step" id="step-2">
+      <div class="step-num">2</div>
+      <div class="step-label">Selecionar Pasta</div>
+    </div>
+    <div class="step" id="step-3">
+      <div class="step-num">3</div>
+      <div class="step-label">Período & Filtros</div>
+    </div>
+    <div class="step" id="step-4">
+      <div class="step-num">4</div>
+      <div class="step-label">Gerar Vídeo</div>
+    </div>
+  </div>
+
+  <!-- CARD 1: CONECTAR -->
+  <div class="card" id="card-connect">
+    <div class="card-title">📁 Conectar ao Google Drive</div>
+    <div class="card-desc">Faça login com a conta Google que possui a pasta com as fotos da obra.</div>
+
+    <div class="auth-section">
+      <div class="auth-dot" id="auth-dot"></div>
+      <div id="auth-text" style="flex:1; font-size:13px; color: var(--muted);">Não conectado</div>
+      <button class="btn-google" onclick="handleAuthClick()" id="auth-btn">
+        <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.35-8.16 2.35-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+        Entrar com Google
+      </button>
+    </div>
+
+    <div class="alert alert-info">
+      ℹ️ Seus arquivos não são enviados a nenhum servidor. Todo o processamento ocorre no seu navegador.
+    </div>
+  </div>
+
+  <!-- CARD 2: PASTA -->
+  <div class="card" id="card-folder">
+    <div class="card-title">📂 Selecionar Pasta de Fotos</div>
+    <div class="card-desc">Escolha a pasta no Google Drive onde a câmera salva as fotos da obra.</div>
+
+    <div id="folder-picker-area">
+      <button class="btn btn-outline" onclick="openFolderBrowser()" id="btn-pick-folder" disabled>
+        📂 Navegar no Meu Drive
+      </button>
+    </div>
+
+    <div id="folder-selected" class="hidden" style="margin-top:16px;">
+      <div style="display:flex; align-items:center; gap:12px; padding:12px 16px; background:var(--bg); border:1px solid var(--border); border-radius:8px;">
+        <span style="font-size:20px;">📁</span>
+        <div>
+          <div id="folder-name" style="font-weight:500; font-size:14px;"></div>
+          <div id="folder-count" style="font-size:12px; color:var(--muted); margin-top:2px;"></div>
+        </div>
+        <button class="btn-danger btn" onclick="changeFolder()" style="margin-left:auto;">Trocar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CARD 3: FILTROS -->
+  <div class="card" id="card-filters">
+    <div class="card-title">⚙️ Período & Configurações</div>
+    <div class="card-desc">Defina o intervalo de datas e quantas fotos por dia serão usadas no vídeo.</div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>Data de início</label>
+        <input type="date" id="date-start">
+      </div>
+      <div class="form-group">
+        <label>Data de fim</label>
+        <input type="date" id="date-end">
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>🌅 Horário inicial (descartar antes)</label>
+        <input type="time" id="time-start" value="07:00">
+      </div>
+      <div class="form-group">
+        <label>🌇 Horário final (descartar depois)</label>
+        <input type="time" id="time-end" value="17:00">
+      </div>
+    </div>
+    <div class="alert alert-info" style="margin-bottom:16px; margin-top:-4px;">
+      🌙 Fotos tiradas fora deste intervalo de horário serão descartadas automaticamente.
+    </div>
+
+    <div class="form-group">
+      <label>Fotos por dia no vídeo</label>
+      <div class="range-value" id="fps-display">4 fotos</div>
+      <input type="range" id="photos-per-day" min="1" max="24" value="4" oninput="updateRange()">
+      <div class="range-labels"><span>1 (1 foto)</span><span>24 (1/hora)</span></div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>Velocidade do vídeo (FPS)</label>
+        <select id="video-fps" onchange="updateDurationTarget()">
+          <option value="15">15 FPS — suave</option>
+          <option value="24" selected>24 FPS — cinematográfico</option>
+          <option value="30">30 FPS — fluido</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Resolução de saída</label>
+        <select id="video-res">
+          <option value="1920x1080" selected>1080p Full HD</option>
+          <option value="1280x720">720p HD</option>
+          <option value="3840x2160">4K (lento)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group" style="margin-top:4px;">
+      <label>⏱ Duração desejada do vídeo</label>
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
+        <div style="flex:1;">
+          <label style="font-size:11px; margin-bottom:4px;">Minutos</label>
+          <input type="number" id="dur-min" min="0" max="59" value="1" oninput="updateDurationTarget()" style="text-align:center;">
+        </div>
+        <div style="font-size:22px; color:var(--muted); padding-top:18px;">:</div>
+        <div style="flex:1;">
+          <label style="font-size:11px; margin-bottom:4px;">Segundos</label>
+          <input type="number" id="dur-sec" min="0" max="59" value="0" oninput="updateDurationTarget()" style="text-align:center;">
+        </div>
+        <div style="flex:2;">
+          <label style="font-size:11px; margin-bottom:4px;">Resultado</label>
+          <div id="dur-result" style="background:var(--bg); border:1px solid var(--border); border-radius:8px; padding:10px 14px; font-size:13px; color:var(--muted);">
+            Calcule as fotos primeiro
+          </div>
+        </div>
+      </div>
+      <input type="hidden" id="frames-per-photo" value="1">
+    </div>
+
+    <div id="filter-preview" class="hidden">
+      <div class="file-stats" id="stats-grid"></div>
+      <div id="preview-thumbs"></div>
+    </div>
+
+    <button class="btn btn-outline" onclick="applyFilters()" id="btn-apply" style="margin-top:8px;">
+      🔍 Calcular fotos selecionadas
+    </button>
+  </div>
+
+  <!-- CARD 4: GERAR -->
+  <div class="card" id="card-generate">
+    <div class="card-title">🎬 Gerar Vídeo Time-Lapse</div>
+    <div class="card-desc">O vídeo será processado no seu navegador e salvo em formato <strong>.mp4</strong>.</div>
+
+    <div id="generate-summary" class="hidden">
+      <div class="file-stats" id="gen-stats"></div>
+    </div>
+
+    <div id="progress-section" class="hidden">
+      <div class="progress-wrap">
+        <div style="display:flex; justify-content:space-between; font-size:13px;">
+          <span id="progress-label">Baixando fotos…</span>
+          <span id="progress-pct">0%</span>
+        </div>
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill" id="progress-fill" style="width:0%"></div>
+        </div>
+        <div class="progress-log" id="progress-log"></div>
+      </div>
+    </div>
+
+    <div id="video-result" class="hidden">
+      <video controls id="video-player"></video>
+      <div class="download-row">
+        <button class="btn btn-success" onclick="downloadVideo()">⬇️ Baixar .mp4</button>
+        <button class="btn btn-outline" onclick="resetAll()">🔄 Novo vídeo</button>
+      </div>
+    </div>
+
+    <div id="generate-actions">
+      <button class="btn btn-primary" onclick="startGenerate()" id="btn-generate" disabled>
+        ▶️ Gerar Time-Lapse
+      </button>
+    </div>
+
+    <div class="alert alert-info" style="margin-top:16px;" id="generate-note">
+      ℹ️ O processamento ocorre em 2 fases: download das fotos e montagem do vídeo. Pode demorar alguns minutos. Mantenha esta aba aberta e ativa (não minimize).
+    </div>
+  </div>
+
+</div>
+
+<!-- Google APIs loaded with callbacks -->
+<script>
+  function onGapiLoad() {
+    window._gapiReady = true;
+    tryInit();
+  }
+  function onGsiLoad() {
+    window._gsiReady = true;
+    tryInit();
+  }
+  function tryInit() {
+    if (window._gapiReady && window._gsiReady) {
+      startApp();
+    }
+  }
+</script>
+<script src="https://apis.google.com/js/api.js?onload=onGapiLoad"></script>
+<script src="https://accounts.google.com/gsi/client" async defer onload="onGsiLoad()"></script>
+
+<script>
+// =====================
+// CONFIG & STATE
+// =====================
+let CLIENT_ID = '';
+let API_KEY = '';
+let accessToken = null;
+let selectedFolderId = null;
+let allFiles = [];
+let selectedFiles = [];
+let videoBlob = null;
+let tokenClient = null;
+
+const SCOPES = 'https://www.googleapis.com/auth/drive.readonly';
+
+// =====================
+// SETUP MODAL
+// =====================
+function saveClientId() {
+  CLIENT_ID = document.getElementById('client-id-input').value.trim();
+  API_KEY = document.getElementById('api-key-input').value.trim();
+  if (!CLIENT_ID) {
+    showModalError('Por favor, insira o Client ID.');
+    return;
+  }
+  document.getElementById('setup-modal').classList.add('hidden');
+  initGoogleAuth();
+}
+
+function skipSetup() {
+  document.getElementById('setup-modal').classList.add('hidden');
+  showDemoMode();
+}
+
+function showModalError(msg) {
+  const el = document.getElementById('modal-error');
+  el.textContent = msg;
+  el.classList.remove('hidden');
+}
+
+// =====================
+// GOOGLE AUTH
+// =====================
+function initGoogleAuth() {
+  gapi.load('client', async () => {
+    await gapi.client.init({ apiKey: API_KEY, discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'] });
+
+    tokenClient = google.accounts.oauth2.initTokenClient({
+      client_id: CLIENT_ID,
+      scope: SCOPES,
+      callback: (tokenResponse) => {
+        if (tokenResponse.error) { console.error(tokenResponse); return; }
+        accessToken = tokenResponse.access_token;
+        onAuthSuccess();
+      }
+    });
+
+    document.getElementById('auth-btn').disabled = false;
+  });
+}
+
+function handleAuthClick() {
+  if (!CLIENT_ID) {
+    document.getElementById('setup-modal').classList.remove('hidden');
+    return;
+  }
+  if (accessToken) {
+    onAuthSuccess();
+    return;
+  }
+  if (!tokenClient) {
+    // GSI ainda não carregou — tentar de novo em 500ms
+    document.getElementById('auth-text').textContent = 'Aguardando Google…';
+    setTimeout(handleAuthClick, 500);
+    return;
+  }
+  // Se já logou antes nesta sessão, não pedir consentimento novamente
+  tokenClient.requestAccessToken({ prompt: '' });
+}
+
+function onAuthSuccess() {
+  const dot = document.getElementById('auth-dot');
+  dot.classList.add('connected');
+  document.getElementById('auth-text').innerHTML = '<span style="color:var(--success); font-weight:500;">✓ Conectado ao Google Drive</span>';
+  document.getElementById('auth-btn').textContent = '✓ Conectado';
+  document.getElementById('auth-btn').disabled = true;
+  document.getElementById('header-status').textContent = 'Drive conectado';
+  document.getElementById('btn-pick-folder').disabled = false;
+  setStep(2);
+
+  // Restaurar pasta salva automaticamente
+  try {
+    const saved = localStorage.getItem('tl_last_folder');
+    if (saved) {
+      const { id, name } = JSON.parse(saved);
+      if (id && name) {
+        selectedFolderId = id;
+        document.getElementById('folder-name').textContent = name;
+        document.getElementById('folder-count').textContent = 'Carregando fotos…';
+        document.getElementById('folder-selected').classList.remove('hidden');
+        document.getElementById('folder-picker-area').classList.add('hidden');
+
+        // Mostrar badge de restauração
+        const badge = document.createElement('div');
+        badge.style = 'font-size:11px; color:var(--success); margin-top:6px;';
+        badge.textContent = '✓ Pasta restaurada automaticamente';
+        document.getElementById('folder-selected').appendChild(badge);
+        setTimeout(() => badge.remove(), 3000);
+
+        setStep(3);
+        loadFolderFiles();
+      }
+    }
+  } catch(e) {}
+}
+
+// =====================
+// CUSTOM FOLDER BROWSER
+// =====================
+let fbStack = [{ id: 'root', name: 'Meu Drive' }]; // breadcrumb stack
+let fbSelectedId = null;
+let fbSelectedName = null;
+
+function openFolderBrowser() {
+  fbStack = [{ id: 'root', name: 'Meu Drive' }];
+  fbSelectedId = null;
+  fbSelectedName = null;
+  document.getElementById('fb-confirm-btn').disabled = true;
+  document.getElementById('fb-selected-label').innerHTML = 'Nenhuma pasta selecionada';
+  document.getElementById('folder-browser-modal').classList.remove('hidden');
+  fbRenderBreadcrumb();
+  fbLoadFolders('root');
+}
+
+function closeFolderBrowser() {
+  document.getElementById('folder-browser-modal').classList.add('hidden');
+}
+
+function fbRenderBreadcrumb() {
+  const bc = document.getElementById('fb-breadcrumb');
+  bc.innerHTML = fbStack.map((item, i) => {
+    if (i < fbStack.length - 1) {
+      return `<span class="fb-crumb" onclick="fbGoTo(${i})">` +
+             (i === 0 ? '🏠 ' : '') + escHtml(item.name) +
+             '</span><span class="fb-crumb-sep"> › </span>';
+    } else {
+      return `<span style="color:var(--text); font-weight:500;">${escHtml(item.name)}</span>`;
+    }
+  }).join('');
+}
+
+function fbGoTo(index) {
+  fbStack = fbStack.slice(0, index + 1);
+  fbSelectedId = null;
+  fbSelectedName = null;
+  document.getElementById('fb-confirm-btn').disabled = true;
+  document.getElementById('fb-selected-label').innerHTML = 'Nenhuma pasta selecionada';
+  fbRenderBreadcrumb();
+  fbLoadFolders(fbStack[fbStack.length - 1].id);
+}
+
+async function fbNavigate(folderId, folderName) {
+  fbStack.push({ id: folderId, name: folderName });
+  fbSelectedId = null;
+  fbSelectedName = null;
+  document.getElementById('fb-confirm-btn').disabled = true;
+  document.getElementById('fb-selected-label').innerHTML = 'Nenhuma pasta selecionada';
+  fbRenderBreadcrumb();
+  await fbLoadFolders(folderId);
+}
+
+async function fbLoadFolders(parentId) {
+  const list = document.getElementById('fb-list');
+  list.innerHTML = '<div class="fb-loading">⏳ Carregando pastas…</div>';
+
+  try {
+    const q = parentId === 'root'
+      ? "'root' in parents and mimeType = 'application/vnd.google-apps.folder' and trashed = false"
+      : `'${parentId}' in parents and mimeType = 'application/vnd.google-apps.folder' and trashed = false`;
+
+    const res = await gapi.client.drive.files.list({
+      q,
+      fields: 'files(id,name)',
+      pageSize: 200,
+      orderBy: 'name'
+    });
+
+    const folders = res.result.files || [];
+
+    if (folders.length === 0) {
+      list.innerHTML = '<div class="fb-loading" style="color:var(--muted);">📭 Nenhuma subpasta aqui.<br><small>Esta pasta pode conter apenas fotos.<br>Clique em "Selecionar esta pasta" para escolhê-la.</small></div>';
+      // Auto-select current folder when no subfolders
+      const current = fbStack[fbStack.length - 1];
+      if (current.id !== 'root') {
+        fbSelectedId = current.id;
+        fbSelectedName = current.name;
+        document.getElementById('fb-confirm-btn').disabled = false;
+        document.getElementById('fb-selected-label').innerHTML = 'Selecionada: <span>' + escHtml(current.name) + '</span>';
+        // Highlight
+        document.querySelectorAll('.fb-item').forEach(el => el.classList.remove('selected'));
+      }
+      return;
+    }
+
+    list.innerHTML = folders.map(f =>
+      `<div class="fb-item" id="fbitem-${f.id}"
+        onclick="fbSelectItem('${f.id}', '${escAttr(f.name)}')"
+        ondblclick="fbNavigate('${f.id}', '${escAttr(f.name)}')">
+        <span class="fb-item-icon">📁</span>
+        <span class="fb-item-name">${escHtml(f.name)}</span>
+        <span class="fb-item-arrow" title="Abrir subpastas" onclick="event.stopPropagation(); fbNavigate('${f.id}','${escAttr(f.name)}')">▶</span>
+      </div>`
+    ).join('');
+
+  } catch(e) {
+    list.innerHTML = `<div class="fb-loading" style="color:var(--danger);">Erro ao carregar: ${e.message}</div>`;
+  }
+}
+
+function fbSelectItem(id, name) {
+  document.querySelectorAll('.fb-item').forEach(el => el.classList.remove('selected'));
+  const el = document.getElementById('fbitem-' + id);
+  if (el) el.classList.add('selected');
+  fbSelectedId = id;
+  fbSelectedName = name;
+  document.getElementById('fb-confirm-btn').disabled = false;
+  document.getElementById('fb-selected-label').innerHTML = 'Selecionada: <span>' + escHtml(name) + '</span>';
+}
+
+function confirmFolderSelection() {
+  if (!fbSelectedId) return;
+  selectedFolderId = fbSelectedId;
+  // Salvar pasta no cache para carregar automaticamente na próxima vez
+  try {
+    localStorage.setItem('tl_last_folder', JSON.stringify({
+      id: fbSelectedId,
+      name: fbSelectedName
+    }));
+  } catch(e) {}
+  document.getElementById('folder-name').textContent = fbSelectedName;
+  document.getElementById('folder-count').textContent = 'Carregando fotos…';
+  document.getElementById('folder-selected').classList.remove('hidden');
+  document.getElementById('folder-picker-area').classList.add('hidden');
+  closeFolderBrowser();
+  setStep(3);
+  loadFolderFiles();
+}
+
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function escAttr(s) {
+  return String(s).replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+}
+
+function changeFolder() {
+  selectedFolderId = null;
+  allFiles = [];
+  try { localStorage.removeItem('tl_last_folder'); } catch(e) {}
+  document.getElementById('folder-selected').classList.add('hidden');
+  document.getElementById('folder-picker-area').classList.remove('hidden');
+  document.getElementById('filter-preview').classList.add('hidden');
+  document.getElementById('btn-generate').disabled = true;
+}
+
+// =====================
+// LOAD FILES FROM DRIVE — busca direta + cache
+// =====================
+const CACHE_PREFIX = 'tl_cache_';
+const CACHE_TTL_MS = 60 * 60 * 1000; // 1 hora
+
+async function loadFolderFiles(forceRefresh = false) {
+  allFiles = [];
+  const cacheKey = CACHE_PREFIX + selectedFolderId;
+
+  // Tentar cache
+  if (!forceRefresh) {
+    try {
+      const raw = localStorage.getItem(cacheKey);
+      if (raw) {
+        const { ts, files } = JSON.parse(raw);
+        if (Date.now() - ts < CACHE_TTL_MS) {
+          // Re-derivar parsedDate a partir do nome do arquivo
+          allFiles = files.map(f => {
+            const m = f.name.match(/(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/);
+            if (!m) return null;
+            const [, y, mo, d, h, mi, s] = m;
+            return {
+              ...f,
+              parsedDate: new Date(`${y}-${mo}-${d}T${h}:${mi}:${s}`),
+              dateStr: `${y}-${mo}-${d}`
+            };
+          }).filter(f => f && !isNaN(f.parsedDate));
+          allFiles.sort((a, b) => a.parsedDate - b.parsedDate);
+          renderFolderStats('⚡ Cache');
+          return;
+        }
+      }
+    } catch(e) { /* cache corrompido — buscar do Drive */ }
+  }
+
+  // Busca direta: uma query busca TODAS as imagens de todos os
+  // subdiretórios de uma vez, sem entrar pasta a pasta
+  document.getElementById('folder-count').textContent = '🔍 Buscando fotos no Drive…';
+  showRefreshBtn(false);
+
+  try {
+    let pageToken = null;
+    let page = 0;
+    do {
+      page++;
+      const res = await gapi.client.drive.files.list({
+        q: `'${selectedFolderId}' in parents and mimeType contains 'image/' and trashed = false`,
+        fields: 'nextPageToken,files(id,name)',
+        pageSize: 1000,
+        orderBy: 'name',
+        pageToken: pageToken || undefined
+      });
+      const imgs = res.result.files || [];
+      allFiles = allFiles.concat(imgs);
+      pageToken = res.result.nextPageToken;
+      document.getElementById('folder-count').textContent =
+        `🔍 ${allFiles.length} fotos encontradas (página ${page})…`;
+    } while (pageToken);
+
+    // Se não encontrou nada diretamente, usar busca recursiva paralela como fallback
+    if (allFiles.length === 0) {
+      document.getElementById('folder-count').textContent = '🔄 Buscando em subpastas…';
+      await scanFolderRecursiveFast(selectedFolderId);
+    }
+
+  } catch(e) {
+    document.getElementById('folder-count').textContent = '❌ Erro: ' + e.message;
+    return;
+  }
+
+  parseAndFinalize(cacheKey);
+}
+
+// Fallback: busca recursiva paralela (muito mais rápida que sequencial)
+async function scanFolderRecursiveFast(folderId, depth = 0) {
+  if (depth > 5) return;
+
+  const [subRes, imgRes] = await Promise.all([
+    gapi.client.drive.files.list({
+      q: `'${folderId}' in parents and mimeType = 'application/vnd.google-apps.folder' and trashed = false`,
+      fields: 'files(id,name)', pageSize: 500
+    }),
+    gapi.client.drive.files.list({
+      q: `'${folderId}' in parents and mimeType contains 'image/' and trashed = false`,
+      fields: 'nextPageToken,files(id,name)', pageSize: 1000
+    })
+  ]);
+
+  const imgs = imgRes.result.files || [];
+  allFiles = allFiles.concat(imgs);
+  if (allFiles.length > 0)
+    document.getElementById('folder-count').textContent = `🔄 ${allFiles.length} fotos encontradas…`;
+
+  const subs = subRes.result.files || [];
+  await Promise.all(subs.map(s => scanFolderRecursiveFast(s.id, depth + 1)));
+}
+
+function parseAndFinalize(cacheKey) {
+  allFiles = allFiles.map(f => {
+    const match = f.name.match(/(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/);
+    if (match) {
+      const [, y, mo, d, h, mi, s] = match;
+      f.parsedDate = new Date(`${y}-${mo}-${d}T${h}:${mi}:${s}`);
+      f.dateStr = `${y}-${mo}-${d}`;
+    }
+    return f;
+  }).filter(f => f.parsedDate);
+
+  allFiles.sort((a, b) => a.parsedDate - b.parsedDate);
+
+  // Salvar no cache — apenas id e name (parsedDate é re-derivado do nome)
+  try {
+    const slim = allFiles.map(f => ({ id: f.id, name: f.name }));
+    localStorage.setItem(cacheKey, JSON.stringify({ ts: Date.now(), files: slim }));
+  } catch(e) {
+    // localStorage cheio — limpar caches antigos e tentar de novo
+    try {
+      Object.keys(localStorage).filter(k => k.startsWith(CACHE_PREFIX)).forEach(k => localStorage.removeItem(k));
+      const slim = allFiles.map(f => ({ id: f.id, name: f.name }));
+      localStorage.setItem(cacheKey, JSON.stringify({ ts: Date.now(), files: slim }));
+    } catch(e2) { /* desistir do cache */ }
+  }
+
+  renderFolderStats('✅ Drive');
+}
+
+function renderFolderStats(source) {
+  const dates = [...new Set(allFiles.map(f => f.dateStr))].sort();
+
+  if (allFiles.length === 0) {
+    document.getElementById('folder-count').textContent = '⚠ Nenhuma foto encontrada. Verifique a pasta selecionada.';
+    return;
+  }
+
+  document.getElementById('folder-count').textContent =
+    `${allFiles.length} fotos • ${dates.length} dias • ${source}`;
+
+  showRefreshBtn(true);
+
+  if (dates.length > 0) {
+    document.getElementById('date-start').value = dates[0];
+    const today = new Date().toISOString().slice(0, 10);
+    document.getElementById('date-end').value = today;
+  }
+}
+
+function showRefreshBtn(show) {
+  let btn = document.getElementById('btn-refresh-cache');
+  if (!btn) {
+    btn = document.createElement('button');
+    btn.id = 'btn-refresh-cache';
+    btn.className = 'btn btn-outline';
+    btn.style = 'font-size:12px; margin-top:10px;';
+    btn.textContent = '🔄 Atualizar lista do Drive';
+    btn.onclick = () => loadFolderFiles(true);
+    document.getElementById('folder-selected').appendChild(btn);
+  }
+  btn.style.display = show ? 'inline-flex' : 'none';
+}
+
+// =====================
+// FILTERS
+// =====================
+function updateRange() {
+  const v = document.getElementById('photos-per-day').value;
+  document.getElementById('fps-display').textContent = `${v} foto${v > 1 ? 's' : ''} por dia`;
+}
+
+function updateDurationTarget() {
+  const fps = parseInt(document.getElementById('video-fps').value);
+  const mins = parseInt(document.getElementById('dur-min').value) || 0;
+  const secs = parseInt(document.getElementById('dur-sec').value) || 0;
+  const targetSecs = mins * 60 + secs;
+
+  if (targetSecs <= 0 || selectedFiles.length === 0) {
+    document.getElementById('dur-result').innerHTML =
+      '<span style="color:var(--muted)">Calcule as fotos primeiro</span>';
+    return;
+  }
+
+  const totalFramesNeeded = targetSecs * fps;
+  // fpf pode ser fracionário internamente, mas arredondamos para o vídeo
+  const fpfRaw = totalFramesNeeded / selectedFiles.length;
+  const fpf = Math.max(0.1, fpfRaw); // permite valores abaixo de 1 (skip de frames)
+
+  // Guardar valor calculado
+  document.getElementById('frames-per-photo').value = fpf;
+
+  // Duração real (com arredondamento)
+  const realSecs = Math.round((selectedFiles.length * fpf) / fps);
+  const rMin = Math.floor(realSecs / 60);
+  const rSec = realSecs % 60;
+  const durLabel = rMin > 0
+    ? `${rMin}m ${String(rSec).padStart(2,'0')}s`
+    : `${rSec}s`;
+
+  let speedLabel = '';
+  if (fpf < 1) {
+    speedLabel = `<span style="color:#3ecf8e">⚡ ${(1/fpf).toFixed(1)}x mais rápido</span>`;
+  } else if (fpf > 1) {
+    speedLabel = `<span style="color:var(--accent)">🐢 ${fpf.toFixed(1)}x mais lento</span>`;
+  } else {
+    speedLabel = `<span style="color:var(--muted)">velocidade padrão</span>`;
+  }
+
+  document.getElementById('dur-result').innerHTML =
+    `<strong style="color:var(--accent)">${durLabel}</strong> &nbsp;${speedLabel}`;
+
+  updateDurationStat(durLabel);
+}
+
+function updateDurationStat(durLabel) {
+  const box = document.querySelector('#stats-grid .stat-box:nth-child(3) .stat-num');
+  if (box) box.textContent = durLabel;
+  const box2 = document.querySelector('#gen-stats .stat-box:nth-child(3) .stat-num');
+  if (box2) box2.textContent = durLabel;
+}
+
+function applyFilters() {
+  const start = document.getElementById('date-start').value;
+  const end = document.getElementById('date-end').value;
+  const ppd = parseInt(document.getElementById('photos-per-day').value);
+
+  if (!start || !end) { alert('Selecione o período.'); return; }
+  if (!allFiles.length && !demoMode) { alert('Carregue uma pasta primeiro.'); return; }
+
+  const timeStart = document.getElementById('time-start').value || '00:00';
+  const timeEnd = document.getElementById('time-end').value || '23:59';
+  const [hStart, mStart] = timeStart.split(':').map(Number);
+  const [hEnd, mEnd] = timeEnd.split(':').map(Number);
+  const minStart = hStart * 60 + mStart;
+  const minEnd = hEnd * 60 + mEnd;
+
+  const filtered = (demoMode ? getDemoFiles() : allFiles).filter(f => {
+    if (f.dateStr < start || f.dateStr > end) return false;
+    // Filter by time of day
+    const h = f.parsedDate.getHours();
+    const m = f.parsedDate.getMinutes();
+    const mins = h * 60 + m;
+    return mins >= minStart && mins <= minEnd;
+  });
+
+  const discarded = (demoMode ? getDemoFiles() : allFiles).filter(f => f.dateStr >= start && f.dateStr <= end).length - filtered.length;
+
+  // Group by date
+  const byDate = {};
+  filtered.forEach(f => {
+    if (!byDate[f.dateStr]) byDate[f.dateStr] = [];
+    byDate[f.dateStr].push(f);
+  });
+
+  // Sample N evenly per day
+  selectedFiles = [];
+  Object.values(byDate).forEach(dayFiles => {
+    dayFiles.sort((a, b) => a.parsedDate - b.parsedDate);
+    if (ppd === 1) {
+      // Pegar só a foto do meio do dia
+      selectedFiles.push(dayFiles[Math.floor(dayFiles.length / 2)]);
+    } else if (dayFiles.length <= ppd) {
+      selectedFiles.push(...dayFiles);
+    } else {
+      const step = (dayFiles.length - 1) / (ppd - 1);
+      for (let i = 0; i < ppd; i++) {
+        selectedFiles.push(dayFiles[Math.round(i * step)]);
+      }
+    }
+  });
+
+  const days = Object.keys(byDate).length;
+  const fps = parseInt(document.getElementById('video-fps').value);
+  // Default: 1 frame por foto (velocidade padrão)
+  const defaultSecs = Math.round(selectedFiles.length / fps);
+  const defMin = Math.floor(defaultSecs / 60);
+  const defSec = defaultSecs % 60;
+  const durLabel = defMin > 0
+    ? `${defMin}m ${String(defSec).padStart(2,'0')}s`
+    : `${defSec}s`;
+
+  // Pré-preencher campos de duração com o valor padrão
+  document.getElementById('dur-min').value = defMin;
+  document.getElementById('dur-sec').value = defSec;
+  document.getElementById('frames-per-photo').value = 1;
+  document.getElementById('dur-result').innerHTML =
+    `<strong style="color:var(--accent)">${durLabel}</strong> &nbsp;<span style="color:var(--muted)">velocidade padrão</span>`;
+
+  // Stats
+  document.getElementById('stats-grid').innerHTML = `
+    <div class="stat-box"><div class="stat-num">${selectedFiles.length}</div><div class="stat-label">Fotos selecionadas</div></div>
+    <div class="stat-box"><div class="stat-num">${days}</div><div class="stat-label">Dias cobertos</div></div>
+    <div class="stat-box"><div class="stat-num">${durLabel}</div><div class="stat-label">Duração estimada</div></div>
+    <div class="stat-box"><div class="stat-num" style="color:var(--muted)">${discarded}</div><div class="stat-label">Fotos noturnas descartadas</div></div>
+  `;
+  document.getElementById('stats-grid').style.gridTemplateColumns = 'repeat(4,1fr)';
+
+  document.getElementById('filter-preview').classList.remove('hidden');
+
+  // Thumb previews (show first 20 as placeholders)
+  const grid = document.getElementById('preview-thumbs');
+  grid.innerHTML = '<div class="preview-grid">' + selectedFiles.slice(0, 20).map(f =>
+    `<div class="preview-thumb">
+      <div style="width:100%;height:100%;background:linear-gradient(135deg,#1e2330,#2a3040);display:flex;align-items:center;justify-content:center;font-size:18px;">📷</div>
+      <div class="thumb-label">${f.dateStr}</div>
+    </div>`
+  ).join('') + (selectedFiles.length > 20 ? `<div class="preview-thumb" style="display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--muted);">+${selectedFiles.length - 20}</div>` : '') + '</div>';
+
+  // Update generate section
+  document.getElementById('gen-stats').innerHTML = document.getElementById('stats-grid').innerHTML;
+  document.getElementById('generate-summary').classList.remove('hidden');
+  document.getElementById('btn-generate').disabled = false;
+  setStep(4);
+}
+
+// =====================
+// GENERATE VIDEO
+// =====================
+let demoMode = false;
+
+function showDemoMode() {
+  demoMode = true;
+  document.getElementById('auth-dot').classList.add('connected');
+  document.getElementById('auth-text').innerHTML = '<span style="color:var(--accent);">⚠ Modo demo — sem conexão real ao Drive</span>';
+  document.getElementById('auth-btn').disabled = true;
+  document.getElementById('btn-pick-folder').disabled = false;
+  document.getElementById('folder-name').textContent = 'Pasta Demo (sem Drive real)';
+  document.getElementById('folder-count').textContent = '120 fotos simuladas';
+  document.getElementById('folder-selected').classList.remove('hidden');
+  document.getElementById('folder-picker-area').classList.add('hidden');
+  allFiles = getDemoFiles();
+  const dates = [...new Set(allFiles.map(f => f.dateStr))];
+  document.getElementById('date-start').value = dates[0];
+  document.getElementById('date-end').value = dates[dates.length - 1];
+  setStep(3);
+}
+
+function getDemoFiles() {
+  const files = [];
+  const start = new Date('2025-01-01');
+  for (let d = 0; d < 30; d++) {
+    const day = new Date(start);
+    day.setDate(start.getDate() + d);
+    const ds = day.toISOString().slice(0, 10).replace(/-/g, '');
+    for (let h = 6; h < 18; h += 2) {
+      const name = `Obra HE_00_${ds}${String(h).padStart(2,'0')}0000.jpg`;
+      files.push({
+        id: `demo_${d}_${h}`,
+        name,
+        parsedDate: new Date(`${ds.slice(0,4)}-${ds.slice(4,6)}-${ds.slice(6,8)}T${String(h).padStart(2,'0')}:00:00`),
+        dateStr: `${ds.slice(0,4)}-${ds.slice(4,6)}-${ds.slice(6,8)}`,
+        demo: true
+      });
+    }
+  }
+  return files;
+}
+
+// Baixa uma imagem do Drive e retorna ImageBitmap (ou null se falhar)
+async function fetchImage(file, retries = 2) {
+  if (file.demo || !accessToken) return null;
+  for (let attempt = 0; attempt <= retries; attempt++) {
+    try {
+      const url = `https://www.googleapis.com/drive/v3/files/${file.id}?alt=media`;
+      const resp = await fetch(url, { headers: { Authorization: 'Bearer ' + accessToken } });
+      if (resp.status === 401 || resp.status === 403) {
+        // Token expirou — pedir novo silenciosamente
+        if (attempt < retries && tokenClient) {
+          await new Promise(res => {
+            tokenClient.callback = (t) => { if (t.access_token) accessToken = t.access_token; res(); };
+            tokenClient.requestAccessToken({ prompt: '' });
+          });
+          continue;
+        }
+        return null;
+      }
+      if (!resp.ok) {
+        if (attempt < retries) { await new Promise(r => setTimeout(r, 500)); continue; }
+        return null;
+      }
+      const blob = await resp.blob();
+      // Verificar se é realmente uma imagem antes de criar bitmap
+      if (!blob.type.startsWith('image/') && blob.size < 100) return null;
+      return await createImageBitmap(blob);
+    } catch {
+      if (attempt < retries) { await new Promise(r => setTimeout(r, 500)); continue; }
+      return null;
+    }
+  }
+  return null;
+}
+
+// Pré-carrega um lote de imagens em paralelo
+async function prefetchBatch(files, startIdx, batchSize) {
+  const batch = files.slice(startIdx, startIdx + batchSize);
+  return await Promise.all(batch.map(f => fetchImage(f)));
+}
+
+async function startGenerate() {
+  document.getElementById('generate-actions').classList.add('hidden');
+  document.getElementById('progress-section').classList.remove('hidden');
+  document.getElementById('generate-note').classList.add('hidden');
+
+  const [w, h] = document.getElementById('video-res').value.split('x').map(Number);
+  const fps = parseInt(document.getElementById('video-fps').value);
+  const fpf = parseFloat(document.getElementById('frames-per-photo').value) || 1;
+  const total = selectedFiles.length;
+  const msPerFrame = 1000 / fps;
+
+  if (total === 0) {
+    uiError('Nenhuma foto selecionada. Clique em "Calcular fotos selecionadas" primeiro.');
+    return;
+  }
+
+  // ── Montar sequência de frames: para cada foto, quantas vezes ela aparece ──
+  // photoRepeat[i] = número de frames que a foto i ocupa no vídeo
+  const photoRepeat = new Array(total).fill(0);
+  if (fpf >= 1) {
+    let accum = 0;
+    for (let i = 0; i < total; i++) {
+      accum += fpf;
+      const count = Math.max(1, Math.round(accum));
+      accum -= count;
+      photoRepeat[i] = count;
+    }
+  } else {
+    // fpf < 1: pular fotos uniformemente (vídeo mais rápido)
+    const targetFrames = Math.max(1, Math.round(total * fpf));
+    for (let i = 0; i < targetFrames; i++) {
+      const idx = Math.min(total - 1, Math.round(i / fpf));
+      photoRepeat[idx] = 1;
+    }
+  }
+  const totalFrames = photoRepeat.reduce((a, b) => a + b, 0);
+  log(`📊 ${total} fotos → ${totalFrames} frames • ${fps}fps • fpf=${fpf.toFixed(2)}`, 'log-ok');
+
+  // ── Canvas de saída ──
+  const canvas = document.createElement('canvas');
+  canvas.width = w; canvas.height = h;
+  const ctx = canvas.getContext('2d');
+
+  // ── FASE 1: Baixar + renderizar cada foto → blobs JPEG leves ──
+  // Usa o canvas normal (toBlob aceita bitmaps vindos de blob autenticado).
+  // Apenas 1 foto 4K na memória por vez.
+  const frameBlobs = []; // sequência final de frames (blobs JPEG)
+
+  for (let i = 0; i < total; i++) {
+    if (photoRepeat[i] === 0) continue; // foto pulada (fpf < 1)
+
+    const f = selectedFiles[i];
+    setProgress(
+      Math.round((i / total) * 70),
+      `⬇️ Processando foto ${i + 1}/${total}…`
+    );
+
+    // Limpar canvas antes de desenhar (evita restos se a foto falhar)
+    ctx.fillStyle = '#000';
+    ctx.fillRect(0, 0, w, h);
+
+    const img = await fetchImage(f);
+    if (img) {
+      ctx.drawImage(img, 0, 0, w, h);
+      img.close?.();
+    } else {
+      drawPlaceholderFrame(ctx, f, w, h, i);
+    }
+
+    // toBlob no canvas normal funciona com bitmaps de blob (não há taint de CORS,
+    // pois a imagem foi baixada via fetch autenticado e convertida em blob local)
+    const blob = await new Promise((res, rej) => {
+      try {
+        canvas.toBlob(b => b ? res(b) : rej(new Error('toBlob retornou null')), 'image/jpeg', 0.9);
+      } catch(e) { rej(e); }
+    });
+    for (let r = 0; r < photoRepeat[i]; r++) frameBlobs.push(blob);
+  }
+
+  if (frameBlobs.length === 0) {
+    uiError('Nenhum frame pôde ser gerado. Verifique a conexão com o Drive.');
+    document.getElementById('progress-section').classList.add('hidden');
+    document.getElementById('generate-actions').classList.remove('hidden');
+    return;
+  }
+
+  log(`✅ ${frameBlobs.length} frames renderizados. Montando vídeo…`, 'log-ok');
+
+  // ── FASE 2: Gravar vídeo reproduzindo os frames com timing controlado ──
+  const stream = canvas.captureStream(fps);
+  const chunks = [];
+  const mimeType = MediaRecorder.isTypeSupported('video/webm;codecs=vp9')
+    ? 'video/webm;codecs=vp9'
+    : (MediaRecorder.isTypeSupported('video/webm;codecs=vp8')
+        ? 'video/webm;codecs=vp8' : 'video/webm');
+  const recorder = new MediaRecorder(stream, {
+    mimeType,
+    videoBitsPerSecond: w >= 3840 ? 40_000_000 : (w >= 1920 ? 16_000_000 : 8_000_000)
+  });
+  recorder.ondataavailable = e => { if (e.data.size > 0) chunks.push(e.data); };
+
+  const done = new Promise(resolve => {
+    recorder.onstop = () => {
+      videoBlob = new Blob(chunks, { type: 'video/webm' });
+      document.getElementById('video-player').src = URL.createObjectURL(videoBlob);
+      document.getElementById('progress-section').classList.add('hidden');
+      document.getElementById('video-result').classList.remove('hidden');
+      setStepDone(4);
+      const realDur = (totalFrames / fps);
+      log(`✓ Vídeo pronto! Duração: ${Math.floor(realDur/60)}m ${Math.round(realDur%60)}s`, 'log-ok');
+      resolve();
+    };
+  });
+
+  recorder.start();
+
+  // Reproduzir cada frame mantendo o ritmo de fps com compensação de atraso
+  await new Promise((resolve) => {
+    let fi = 0;
+    let startTime = null;
+
+    async function tick(timestamp) {
+      if (startTime === null) startTime = timestamp;
+      const expectedFrame = Math.floor((timestamp - startTime) / msPerFrame);
+
+      // Desenhar todos os frames que já deveriam ter aparecido (mas no mínimo avança 1)
+      while (fi <= expectedFrame && fi < frameBlobs.length) {
+        const img = await createImageBitmap(frameBlobs[fi]);
+        ctx.drawImage(img, 0, 0, w, h);
+        img.close?.();
+        setProgress(
+          70 + Math.round(((fi + 1) / frameBlobs.length) * 29),
+          `🎬 Montando vídeo: ${fi + 1}/${frameBlobs.length}`
+        );
+        fi++;
+        break; // 1 frame por tick para manter o ritmo
+      }
+
+      if (fi < frameBlobs.length) {
+        requestAnimationFrame(tick);
+      } else {
+        // Manter o último frame visível por um instante e parar
+        setTimeout(() => { recorder.stop(); resolve(); }, 400);
+      }
+    }
+    requestAnimationFrame(tick);
+  });
+
+  await done;
+}
+
+async function drawFrame(ctx, file, w, h, index, total) {
+  // Mantido para compatibilidade — não usado no fluxo principal
+  const img = await fetchImage(file);
+  if (img) {
+    ctx.drawImage(img, 0, 0, w, h);
+  } else {
+    drawPlaceholderFrame(ctx, file, w, h, index);
+  }
+  // Sem overlay — vídeo limpo
+}
+
+function drawPlaceholderFrame(ctx, file, w, h, index) {
+  // Gradient sky simulation for demo
+  const progress = index / selectedFiles.length;
+  const r = Math.round(20 + progress * 30);
+  const g = Math.round(30 + progress * 40);
+  const b = Math.round(60 + progress * 80);
+  const grad = ctx.createLinearGradient(0, 0, 0, h);
+  grad.addColorStop(0, `rgb(${r + 10},${g + 20},${b + 40})`);
+  grad.addColorStop(1, `rgb(${r + 40},${g + 50},${b + 20})`);
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, w, h);
+
+  // Simulated building silhouette
+  ctx.fillStyle = 'rgba(0,0,0,0.5)';
+  const buildProgress = 0.3 + progress * 0.5;
+  const bh = h * buildProgress;
+  ctx.fillRect(w * 0.3, h - bh, w * 0.4, bh);
+
+  // DEMO watermark
+  ctx.fillStyle = 'rgba(255,255,255,0.15)';
+  ctx.font = `bold ${Math.round(w * 0.05)}px Arial`;
+  ctx.textAlign = 'center';
+  ctx.fillText('MODO DEMO', w / 2, h / 2);
+  ctx.textAlign = 'left';
+}
+
+function downloadVideo() {
+  if (!videoBlob) return;
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(videoBlob);
+  const start = document.getElementById('date-start').value;
+  const end = document.getElementById('date-end').value;
+  a.download = `timelapse_obra_${start}_${end}.mp4`;
+  a.click();
+}
+
+function resetAll() {
+  selectedFiles = [];
+  videoBlob = null;
+  document.getElementById('video-result').classList.add('hidden');
+  document.getElementById('progress-section').classList.add('hidden');
+  document.getElementById('generate-actions').classList.remove('hidden');
+  document.getElementById('generate-note').classList.remove('hidden');
+  document.getElementById('generate-summary').classList.add('hidden');
+  document.getElementById('btn-generate').disabled = true;
+  document.getElementById('filter-preview').classList.add('hidden');
+  document.getElementById('progress-log').innerHTML = '';
+  setProgress(0, 'Aguardando…');
+}
+
+// =====================
+// UTILS
+// =====================
+function setProgress(pct, label) {
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-pct').textContent = pct + '%';
+  document.getElementById('progress-label').textContent = label;
+}
+
+function log(msg, cls = '') {
+  const el = document.getElementById('progress-log');
+  const div = document.createElement('div');
+  div.textContent = msg;
+  if (cls) div.classList.add(cls);
+  el.appendChild(div);
+  el.scrollTop = el.scrollHeight;
+}
+
+function setStep(n) {
+  for (let i = 1; i <= 4; i++) {
+    const el = document.getElementById(`step-${i}`);
+    el.classList.remove('active', 'done');
+    if (i < n) el.classList.add('done');
+    if (i === n) el.classList.add('active');
+    // Update done step nums to checkmarks
+    if (i < n) el.querySelector('.step-num').textContent = '✓';
+    else el.querySelector('.step-num').textContent = i;
+  }
+}
+
+function setStepDone(n) {
+  const el = document.getElementById(`step-${n}`);
+  el.classList.remove('active');
+  el.classList.add('done');
+  el.querySelector('.step-num').textContent = '✓';
+}
+
+// Init — called only after both gapi and gsi are fully loaded
+function startApp() {
+  CLIENT_ID = '848683929011-07hp946kl9e3ek9256g1ns8oacbcab5f.apps.googleusercontent.com';
+  API_KEY = 'AIzaSyBONH1ngNsnkH_1tV3ZVQT4Bz0zWaIxpA4';
+  document.getElementById('setup-modal').classList.add('hidden');
+
+  // Pre-fill date fields
+  const today = new Date().toISOString().slice(0, 10);
+  document.getElementById('date-end').value = today;
+
+  initGoogleAuth();
+}
+
+// =====================
+// ERROR CAPTURE SYSTEM
+// =====================
+const _errorLog = [];
+
+function uiError(msg, loc = '') {
+  const time = new Date().toLocaleTimeString('pt-BR');
+  _errorLog.push({ time, msg, loc });
+  const panel = document.getElementById('error-panel');
+  const body = document.getElementById('error-panel-body');
+  const count = document.getElementById('error-count');
+  panel.style.display = 'block';
+  count.textContent = _errorLog.length;
+  const div = document.createElement('div');
+  div.className = 'err-line';
+  div.innerHTML = `<span class="err-time">[${time}]</span>${escHtml(msg)}` +
+    (loc ? `<span class="err-loc">${escHtml(loc)}</span>` : '');
+  body.appendChild(div);
+  body.scrollTop = body.scrollHeight;
+  console.error(`[TimeLapse] ${msg}`, loc);
+}
+
+function copyErrors() {
+  const text = _errorLog.map(e => `[${e.time}] ${e.msg}${e.loc ? ' @ ' + e.loc : ''}`).join('\n');
+  navigator.clipboard.writeText(text).then(() => alert('Erros copiados!'));
+}
+
+function clearErrors() {
+  _errorLog.length = 0;
+  document.getElementById('error-panel-body').innerHTML = '';
+  document.getElementById('error-count').textContent = '0';
+  document.getElementById('error-panel').style.display = 'none';
+}
+
+// Capturar erros globais não tratados
+window.addEventListener('error', e => {
+  uiError(e.message, `${e.filename?.split('/').pop() || ''}:${e.lineno}`);
+});
+
+window.addEventListener('unhandledrejection', e => {
+  uiError('Promise rejeitada: ' + (e.reason?.message || e.reason), '');
+});
+
+// Envolver funções críticas com captura de erro
+const _origApplyFilters = applyFilters;
+window.applyFilters = function() {
+  try { _origApplyFilters(); }
+  catch(e) { uiError('applyFilters: ' + e.message, e.stack?.split('\n')[1]?.trim() || ''); }
+};
+
+const _origStartGenerate = startGenerate;
+window.startGenerate = async function() {
+  try { await _origStartGenerate(); }
+  catch(e) { uiError('startGenerate: ' + e.message, e.stack?.split('\n')[1]?.trim() || ''); }
+};
+
+const _origLoadFolderFiles = loadFolderFiles;
+window.loadFolderFiles = async function(force) {
+  try { await _origLoadFolderFiles(force); }
+  catch(e) { uiError('loadFolderFiles: ' + e.message, e.stack?.split('\n')[1]?.trim() || ''); }
+};
+
+</script>
+
+<!-- FOLDER BROWSER MODAL -->
+<div id="folder-browser-modal" class="hidden">
+  <div class="fb-box">
+    <div class="fb-header">
+      <span style="font-size:20px;">📁</span>
+      <h3>Selecionar pasta de fotos</h3>
+      <button class="btn btn-outline" style="padding:6px 12px; font-size:12px;" onclick="closeFolderBrowser()">✕ Fechar</button>
+    </div>
+    <div class="fb-breadcrumb" id="fb-breadcrumb">
+      <span class="fb-crumb" onclick="fbNavigate('root','Meu Drive')">🏠 Meu Drive</span>
+    </div>
+    <div class="fb-list" id="fb-list">
+      <div class="fb-loading">Carregando pastas…</div>
+    </div>
+    <div class="fb-footer">
+      <div class="fb-selected-label" id="fb-selected-label">Nenhuma pasta selecionada</div>
+      <button class="btn btn-outline" style="font-size:13px;" onclick="closeFolderBrowser()">Cancelar</button>
+      <button class="btn btn-primary" id="fb-confirm-btn" onclick="confirmFolderSelection()" disabled>✓ Selecionar esta pasta</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ERROR PANEL -->
+<div id="error-panel" style="display:none;">
+  <div id="error-panel-header">
+    ⚠ Erros detectados
+    <div style="display:flex;gap:8px;">
+      <span id="error-count" style="background:rgba(255,255,255,0.2);padding:1px 7px;border-radius:10px;">0</span>
+      <span style="cursor:pointer;opacity:0.7;" onclick="document.getElementById('error-panel').style.display='none'">✕</span>
+    </div>
+  </div>
+  <div id="error-panel-body"></div>
+  <div id="error-panel-footer">
+    <button class="btn btn-outline" style="font-size:11px;padding:5px 10px;" onclick="copyErrors()">📋 Copiar erros</button>
+    <button class="btn btn-outline" style="font-size:11px;padding:5px 10px;" onclick="clearErrors()">🗑 Limpar</button>
+  </div>
+</div>
+
+</body>
+</html>
